@@ -378,6 +378,8 @@ check_domain_status()
     then
         # IRNIC do not mention registerars but set them as billing contact
         REGISTRAR=`cat ${WHOIS_TMP} | ${AWK} -F: '/bill-c:/ && $2 != ""  { REGISTRAR=substr($2,1,27) } END { print REGISTRAR }'|$GREP -o 'to[a-z0-9\-]+'`
+        # expcept the direct registered with IRNIC
+        [ -z "$REGISTERAR" ] && REGISTRAR='IRNIC'
     elif [ "${TLDTYPE}" == "in" ];
     then
         REGISTRAR=`cat ${WHOIS_TMP} | ${AWK} -F: '/Sponsoring Registrar:/ && $2 != ""  { REGISTRAR=substr($2,1,47) } END { print REGISTRAR }'`
